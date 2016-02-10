@@ -3,39 +3,40 @@ $(function(){
 	
   //テキストリンクをクリックしたら
 	$("#modal-open").click(function(){
-	  //body内の最後に<div id="modal-bg"></div>を挿入
-		$("body").append('<div id="modal-bg"></div>');
+	  //body内の最後に<div id="modal-overlay"></div>を挿入
+		$("body").append('<div id="modal-overlay"></div>');
     
-    //画面中央を計算する関数を実行
-    modalResize();
-
+    //画面中央を取得する関数を実行
+    centeringModalSyncer();
     //モーダルウィンドウを表示
-		$("#modal-bg,#modal-main").fadeIn("slow");
+		$("#modal-overlay").fadeIn("slow");
+		$("#modal-content").fadeIn("slow");	
     
     //画面のどこかをクリックしたらモーダルを閉じる
-		$("#modal-bg,#modal-main").click(function(){
-			$("#modal-main,#modal-bg").fadeOut("slow",function(){
-	      //挿入した<div id="modal-bg"></div>を削除
-				$('#modal-bg').remove() ;
+		$("#modal-overlay,#modal-content").click(function(){
+			$("#modal-content,#modal-overlay").fadeOut("slow",function(){
+	      //挿入した<div id="modal-overlay"></div>を削除
+				$('#modal-overlay').remove() ;
 			});
 	
 		});
     
-    //画面の左上からmodal-mainの横幅・高さを引き、その値を2で割ると画面中央の位置が計算できます
-		$(window).resize(modalResize);
-		function modalResize(){
+    //画面の中央を取得する
+		$(window).resize(centeringModalSyncer);
+		
+		function centeringModalSyncer(){
 	
 			var w = $(window).width();
 			var h = $(window).height();
 			
-			var cw = $("#modal-main").outerWidth();
-			var ch = $("#modal-main").outerHeight();
+			var cw = $("#modal-content").outerWidth();
+			var ch = $("#modal-content").outerHeight();
       
-	    //取得した値をcssに追加する
-			$("#modal-main").css({
-              "left": ((w - cw)/2) + "px",
-              "top": ((h - ch)/2) + "px"
-          	});
+	    //cssに算出した位置を追加する
+			$("#modal-content").css({"left": ((w - cw)/2) + "px","top": ((h - ch)/2) + "px"});
+
 		}
+
 	});
+
 });
